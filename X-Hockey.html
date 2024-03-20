@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>X-Hockey</title>
+  <style>
+    canvas {
+      background-color: #000;
+      display: block;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="pongCanvas" width="1000" height="500"></canvas>
+  <script>
+    // Configurações do jogo
+    const canvas = document.getElementById("pongCanvas");
+    const context = canvas.getContext("2d");
+    const width = canvas.width;
+    const height = canvas.height;
+    const paddleWidth = 10;
+    const paddleHeight = 80;
+    let paddle1Y = (height - paddleHeight) / 2;
+    let paddle2Y = (height - paddleHeight) / 2;
+    const paddleSpeed = 5;
+    let ballX = width / 2;
+    let ballY = height / 2;
+    let ballSpeedX = 5;
+    let ballSpeedY = 5;
+    let player1Score = 0;
+    let player2Score = 0;
+
+    // Função para desenhar elementos do jogo
+    function draw() {
+      // Limpa o canvas
+      context.clearRect(0, 0, width, height);
+
+      // Desenha as raquetes
+      context.fillStyle = "#fff";
+      context.fillRect(0, paddle1Y, paddleWidth, paddleHeight);
+      context.fillRect(width - paddleWidth, paddle2Y, paddleWidth, paddleHeight);
+
+      // Desenha a bola
+      context.beginPath();
+      context.arc(ballX, ballY, 10, 0, Math.PI * 2);
+      context.fillStyle = "#fff";
+      context.fill();
+      context.closePath();
+
+      // Desenha o placar
+      context.fillStyle = "#fff";
+      context.font = "20px Arial";
+      context.fillText(`Player 1: ${player1Score}`, 20, height - 20);
+      context.fillText(`Player 2: ${player2Score}`, width - 140, height - 20);
+    }
+
+    // Função principal do jogo
+    function update() {
+      // Movimenta as raquetes
+      if (keysPressed.w && paddle1Y > 0) {
+        paddle1Y -= paddleSpeed;
+      } else if (keysPressed.s && paddle1Y < height - paddleHeight) {
+        paddle1Y += paddleSpeed;
+      }
+
+      if (keysPressed.ArrowUp && paddle2Y > 0) {
+        paddle2Y -= paddleSpeed;
+      } else if (keysPressed.ArrowDown && paddle2Y < height - paddleHeight) {
+        paddle2Y += paddleSpeed;
+      }
+
+      // Movimenta a bola
+      ballX += ballSpeedX;
+      ballY += ballSpeedY;
+
+      // Verifica colisões com as paredes
+      if (ballY < 0 || ballY > height) {
+        ballSpeedY = -ballSpeedY;
+      }
+
+      // Verifica colisões com as raquetes
+      if (ballX < paddleWidth && ballY > paddle1Y && ballY < paddle1Y + paddleHeight) {
+        ballSpeedX = -ballSpeedX;
+      }
+      if (ballX > width - paddleWidth && ballY > paddle2Y && ballY < paddle2Y + paddleHeight) {
+        ballSpeedX = -ballSpeedX;
+      }
+
+      // Verifica se a bola saiu da tela
+      if (ballX < 0) {
+        player2Score++;
+        resetBall();
+      } else if (ballX > width) {
+        player1Score++;
+        resetBall();
+      }
+    }
+
+    // Função para resetar a posição da bola
+    function resetBall() {
+      ballX = width / 2;
+      ballY = height / 2;
+    }
+
+    // Função para lidar com as teclas pressionadas
+    const keysPressed = {};
+    window.addEventListener("keydown", function(event) {
+      keysPressed[event.key] = true;
+    });
+    window.addEventListener("keyup", function(event) {
+      keysPressed[event.key] = false;
+    });
+
+    // Função de loop do jogo
+    function gameLoop() {
+      update();
+      draw();
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Inicia o jogo
+    gameLoop();
+  </script>
+</body>
+</html>
