@@ -12,6 +12,7 @@
       background-image: url("https://img.freepik.com/vetores-gratis/fundo-abstrato-geometrico-verde_23-2148368466.jpg");
       background-size: cover;
       background-position: center;
+      overflow: hidden;
     }
 
     canvas {
@@ -39,13 +40,19 @@
     }
 
     .player1-score {
-      color: red; /* Cor para o placar do Player 1 */
+      color: greenyellow; /* Cor para o placar do Player 1 */
       margin-right: 70px;
+      text-shadow: 2px 2px 3px red ;
+      font-weight: bold;
+      font-size: 35px;
     }
 
     .player2-score {
       color: greenyellow; /* Cor para o placar do Player 2 */
       margin-left: 70px;
+      text-shadow: 2px 2px 3px red ;
+      font-weight: bold;
+      font-size: 35px;
     }
 
     .paddle {
@@ -83,12 +90,18 @@
       margin-top: 200px;
       margin-right: 80px;
     }
+    .divisor{
+      color: limegreen;
+      font-weight: bold;
+      font-size: 38px;
+    }
   </style>
 </head>
 <body>
   <div class="game-container">
     <div class="scoreboard">
       <span class="player1-score">Player 1: 0</span>
+      <span class=" divisor "> X </span>  
       <span class="player2-score">Player 2: 0</span>
     </div>
     <img src="imagem-da-logo.jpg" class="side-image left">
